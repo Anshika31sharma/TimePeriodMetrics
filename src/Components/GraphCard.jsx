@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Chart from "chart.js/auto";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const GraphCard = () => {
-  const [activeTab, setActiveTab] = useState(1);
+  const [selectedOption, setSelectedOption] = useState("averageOrderValue");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     const canvas = document.getElementById("myChart");
@@ -14,101 +18,65 @@ const GraphCard = () => {
         responsive: true,
         maintainAspectRatio: false,
         interaction: {
-          mode: 'index',
+          mode: "index",
           intersect: false,
         },
         scales: {
           x: {
             title: {
               display: true,
-              text: 'Month'
-            }
+              text: "Month",
+            },
           },
           y: {
             beginAtZero: true,
             title: {
               display: true,
-              text: 'Sales'
-            }
-          }
+              text: "Sales",
+            },
+          },
         },
         plugins: {
           legend: {
-            position: 'top',
+            position: "top",
           },
           title: {
             display: true,
-            text: 'Sales Data Visualization'
-          }
-        }
+            text: "Sales Data Visualization",
+          },
+        },
       };
 
-      if (activeTab === 1) {
-        chartInstance = new Chart(context, {
-          type: "line",
-          data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-            datasets: [{
-              label: "Monthly Sales",
-              data: [20, 30, 25, 35, 40, 45],
-              borderColor: "rgb(75, 192, 192)",
-              tension: 0.1,
-            }],
+      // Static data for demonstration purposes
+      const staticData = {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        datasets: [
+          {
+            label: "User 1",
+            data: [20, 30, 25, 35, 40, 45],
+            borderColor: "rgb(75, 192, 192)",
+            tension: 0.1,
           },
-          options: chartOptions,
-        });
-      } else if (activeTab === 2) {
-        chartInstance = new Chart(context, {
-          type: "bar",
-          data: {
-            labels: ["Category 1", "Category 2", "Category 3", "Category 4"],
-            datasets: [{
-              label: "Monthly Sales",
-              data: [50, 30, 45, 25],
-              backgroundColor: "rgba(255, 99, 132, 0.6)",
-              borderColor: "rgba(255, 99, 132, 1)",
-              borderWidth: 1,
-              barThickness: 50,
-            }],
+          {
+            label: "User 2",
+            data: [25, 20, 30, 40, 35, 50],
+            borderColor: "rgb(255, 99, 132)",
+            borderDash: [5, 5], // Dotted line for User 2
+            tension: 0.4,
           },
-          options: chartOptions,
-        });
-      } else if (activeTab === 3) {
-        chartInstance = new Chart(context, {
-          type: "line",
-          data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-            datasets: [
-              {
-                label: "Monthly Sales 2023",
-                data: [20, 30, 25, 35, 40, 45],
-                borderColor: "rgb(75, 192, 192)",
-                backgroundColor: "rgba(75, 192, 192, 0.2)",
-                tension: 0.4,
-                borderWidth: 2,
-                pointStyle: 'rectRounded',
-                pointRadius: 5,
-                pointBorderColor: 'rgb(75, 192, 192)',
-                pointBackgroundColor: '#fff',
-              },
-              {
-                label: "Monthly Sales 2022",
-                data: [25, 20, 30, 40, 35, 50],
-                borderColor: "rgb(255, 99, 132)",
-                backgroundColor: "rgba(255, 99, 132, 0.2)",
-                tension: 0.4,
-                borderWidth: 2,
-                borderDash: [5, 5],
-                pointStyle: 'triangle',
-                pointRadius: 5,
-                pointBorderColor: 'rgb(255, 99, 132)',
-                pointBackgroundColor: '#fff',
-              }
-            ],
-          },
-          options: chartOptions,
-        });
-      }
+        ],
+      };
+
+      setChartData(staticData);
+
+      chartInstance = new Chart(context, {
+        type: "line",
+        data: {
+          labels: staticData.labels || [],
+          datasets: staticData.datasets || [],
+        },
+        options: chartOptions,
+      });
 
       return () => {
         if (chartInstance) {
@@ -116,47 +84,50 @@ const GraphCard = () => {
         }
       };
     }
-  }, [activeTab]);
+  }, [selectedOption, selectedDate]);
 
-  const handleTabClick = (tabNumber) => {
-    setActiveTab(tabNumber);
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
   };
 
   return (
-    <div 
+    <div
       style={{
-        padding: '20px',
-        maxWidth: '100%',
-        margin: 'auto',
-        boxSizing: 'border-box',
+        padding: "20px",
+        margin: "auto",
+        boxSizing: "border-box",
       }}
-      className="bg-white border rounded-md shadow-lg"
+      className="bg-gray-50 border rounded-md shadow-lg"
     >
-      <div style={{ display: 'flex', flexWrap: 'wrap', marginBottom: '20px' }}>
-        <div
-          onClick={() => handleTabClick(1)}
-          style={{ cursor: 'pointer', padding: '10px', fontWeight: activeTab === 1 ? 'bold' : 'normal' }}
+      <div style={{ display: "flex", flexWrap: "wrap", marginBottom: "20px" }}>
+        <select
+          value={selectedOption}
+          onChange={handleOptionChange}
+          style={{ marginLeft: "10px" }}
         >
-          Daily Revenue
-        </div>
-        <div
-          onClick={() => handleTabClick(2)}
-          style={{ cursor: 'pointer', padding: '10px', fontWeight: activeTab === 2 ? 'bold' : 'normal' }}
-        >
-          Daily Orders
-        </div>
-        <div
-          onClick={() => handleTabClick(3)}
-          style={{ cursor: 'pointer', padding: '10px', fontWeight: activeTab === 3 ? 'bold' : 'normal' }}
-        >
-          New Customers
-        </div>
+          <option value="averageOrderValue">Average Order Value</option>
+          <option value="conversionRate">Conversion Rate</option>
+          <option value="frowSales">Frow Sales</option>
+          <option value="returnRate">Return Rate</option>
+        </select>
+        <DatePicker
+          selected={selectedDate}
+          onChange={handleDateChange}
+          dateFormat="MM/dd/yyyy"
+          style={{ marginLeft: "10px" }}
+        />
       </div>
-      <div style={{ height: '400px', position: 'relative' }}>
-        <canvas id="myChart"></canvas>
+      <div style={{ position: "relative", width: "100%", overflowX: "auto" }}>
+        <canvas
+          id="myChart"
+          style={{ width: "100%", height: "400px" }}
+        ></canvas>
       </div>
     </div>
   );
 };
-
 export default GraphCard;
