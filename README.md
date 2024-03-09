@@ -2,14 +2,6 @@
 
 This project is a React application that visualizes data using Chart.js. It fetches data from a remote API and displays it in a line chart with various customization options.
 
-## Table of Contents
-
-- [Features](#features)
-- [Technogoiesused](#Technogoies used)
-- [Dependencies](#Dependencies)
-- [GettingStarted](#Getting Started)
-- [Author](#Author)
-
 
 ## Features
 
