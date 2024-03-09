@@ -166,7 +166,7 @@ const GraphCard = () => {
   return (
     <div  className="bg-gray-50 rounded-md shadow-lg p-5 m-auto">
       <div className="flex gap-5 flex-wrap">
-        <select className="p-2" value={selectedOption} onChange={handleOptionChange}>
+        <select className="p-2 rounded-lg" value={selectedOption} onChange={handleOptionChange}>
           <option  value="averageOrderValue">Average Order Value</option>
           <option value="conversionRate">Conversion Rate</option>
           <option value="growSales">Grow Sales</option>
