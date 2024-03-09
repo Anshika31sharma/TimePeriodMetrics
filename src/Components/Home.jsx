@@ -6,17 +6,24 @@ import {
 } from "@heroicons/react/outline";
 
 function Home() {
-  const [weeklyRevenue, setWeeklyRevenue] = useState(0);
-  const [weeklyOrders, setWeeklyOrders] = useState(0);
-  const [newCustomers, setNewCustomers] = useState(0);
+  const [userData, setUserData] = useState({
+    weeklyRevenue: 0,
+    weeklyOrders: 0,
+    newCustomers: 0,
+  });
 
   useEffect(() => {
-    fetch("https://apigenerator.dronahq.com/api/l_WmAR8I/data")
+    const userId = "B36aIzE5"; 
+    fetch(`https://apigenerator.dronahq.com/api/${userId}/data`)
       .then((response) => response.json())
       .then((data) => {
-        setWeeklyRevenue(data?.weeklyRevenue || 0);
-        setWeeklyOrders(data?.weeklyOrders || 0);
-        setNewCustomers(data?.newCustomers || 0);
+        console.log("Data received:", data); 
+
+        setUserData({
+          weeklyRevenue: data?.weeklyRevenue || 0,
+          weeklyOrders: data?.weeklyOrders || 0,
+          newCustomers: data?.newCustomers || 0,
+        });
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
@@ -30,7 +37,7 @@ function Home() {
         <div className="ml-5">
           <h1 className="text-gray-400 mt-2 text-xl">Weekly Revenue</h1>
           <h2 className="mt-2 text-blue-400 font-bold text-4xl">
-            $ {weeklyRevenue}
+            $ {userData.weeklyRevenue}
           </h2>
           <h3 className="mt-2 md:mt-4 lg:mt-6 text-green-600">
             +5% since last week
@@ -45,7 +52,7 @@ function Home() {
         <div className="ml-5">
           <h1 className="text-gray-400 mt-2 text-xl">Weekly Orders</h1>
           <h2 className="mt-2 text-orange-400 font-bold text-4xl">
-            {weeklyOrders}
+            {userData.weeklyOrders}
           </h2>
           <h3 className="mt-2 md:mt-4 lg:mt-6 text-red-500">
             -254% since last week
@@ -60,7 +67,7 @@ function Home() {
         <div className="ml-5">
           <h1 className="text-gray-400 mt-2 text-xl">New Customers</h1>
           <h2 className="mt-2 text-green-600 font-bold text-4xl">
-            {newCustomers}
+            {userData.newCustomers}
           </h2>
           <h3 className="mt-2 md:mt-4 lg:mt-6 text-green-600">
             +93% since last week
