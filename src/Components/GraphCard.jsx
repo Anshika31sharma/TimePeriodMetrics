@@ -172,7 +172,7 @@ const GraphCard = () => {
           <option value="growSales">Grow Sales</option>
           <option value="returnRate">Return Rate</option>
         </select>
-        <select value={selectedMonth} onChange={handleMonthChange}>
+        <select className=" p-4 rounded-lg" value={selectedMonth} onChange={handleMonthChange}>
         <option value="Jan">Jan</option>
           <option value="Feb">Feb</option>
           <option value="Mar">Mar</option>
@@ -186,11 +186,11 @@ const GraphCard = () => {
           <option value="Nov">Nov</option>
           <option value="Dec">Dec</option>
         </select>
-        <select value={selectedYearUser1} onChange={handleYearUser1Change}>
+        <select className=" p-4 rounded-lg" value={selectedYearUser1} onChange={handleYearUser1Change}>
         <option value={2022}>2022</option>
           <option value={2023}>2023</option>
         </select>
-        <select value={selectedYearUser2} onChange={handleYearUser2Change}>
+        <select className=" p-4 rounded-lg" value={selectedYearUser2} onChange={handleYearUser2Change}>
         <option value={2022}>2022</option>
           <option value={2023}>2023</option>
         </select>
